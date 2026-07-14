@@ -15,6 +15,7 @@ keywords get caught and collapse at interview.
 from __future__ import annotations
 
 import re
+from datetime import datetime, timezone
 from pathlib import Path
 
 from docx import Document
@@ -129,6 +130,17 @@ def generate_screening_cv(role: dict, screening: dict, profile_path=None, out_di
         _run(doc.add_paragraph(), prof["certifications"])
     if prof.get("education"):
         _run(doc.add_paragraph(), prof["education"])
+
+    # Honest document metadata. python-docx's bundled template otherwise leaves
+    # author='python-docx' and a 2013 created date — a machine-generation
+    # fingerprint visible to anyone who opens File > Properties.
+    now = datetime.now(timezone.utc)
+    cp = doc.core_properties
+    cp.author = prof.get("name", "")
+    cp.last_modified_by = prof.get("name", "")
+    cp.created = now
+    cp.modified = now
+    cp.title = f"{prof.get('name', 'CV')} - {target}"
 
     doc.save(str(path))
     return path
