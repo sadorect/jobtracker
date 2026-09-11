@@ -151,8 +151,9 @@ week_ago = today - dt.timedelta(days=7)
 
 
 def _applied_recently(s: pd.Series) -> int:
-    dates = pd.to_datetime(s, errors="coerce").dt.date
-    return int(((dates >= week_ago) & (dates <= today)).sum())
+    dates = pd.to_datetime(s, errors="coerce").dt.normalize()
+    lo, hi = pd.Timestamp(week_ago), pd.Timestamp(today)
+    return int(((dates >= lo) & (dates <= hi)).sum())
 
 
 def _follow_up_due_mask(d: pd.DataFrame) -> pd.Series:
@@ -472,8 +473,8 @@ if company_sel:
     view = view[view["company"].isin(company_sel)]
 if isinstance(date_range, (tuple, list)) and len(date_range) == 2:
     lo, hi = date_range
-    found = pd.to_datetime(view["date_found"], errors="coerce").dt.date
-    view = view[(found.isna()) | ((found >= lo) & (found <= hi))]
+    found = pd.to_datetime(view["date_found"], errors="coerce").dt.normalize()
+    view = view[(found.isna()) | ((found >= pd.Timestamp(lo)) & (found <= pd.Timestamp(hi)))]
 if search.strip():
     q = search.strip().lower()
     hay = (
