@@ -12,6 +12,7 @@ from urllib.parse import quote
 import pandas as pd
 import streamlit as st
 
+import ai_panel
 import config
 import cv_preview
 import db
@@ -213,6 +214,7 @@ if not _cv_queued.empty:
             "writes the optimised screening CV, then settles the role to **CV Drafted**."
         )
         st.code("draft the queued screening CVs", language=None)
+        ai_panel.queue_button(_cv_queued)
 
 # --- Contact-resolver queue ("Needs a contact") --------------------------- #
 # A follow-up email needs a recruiter address. Live roles (Applied+) with no
@@ -413,6 +415,9 @@ if not to_action.empty:
                 st.warning(err)
             if not res["errors"]:
                 st.rerun()
+
+# --- Claude assistant: CV upload, profile, AI drafting (ADR-012) ---------- #
+ai_panel.render(df)
 
 # --- Filters --------------------------------------------------------------- #
 _found_dates = pd.to_datetime(df["date_found"], errors="coerce").dt.date.dropna()

@@ -18,3 +18,4 @@ they were made. Start a new one from [ADR-template.md](ADR-template.md).
 | ADR-009 | [Interview CV: a designed HTML→PDF, built in-house](ADR-009-interview-cv-a-designed-html-pdf-built-in-house.md) | Accepted |
 | ADR-010 | [Follow-up emails: verified contacts, a 2-working-day queue, drafts only](ADR-010-follow-up-emails-verified-contacts-a-2-working-day-queue.md) | Accepted |
 | ADR-011 | [Archive for ended/closed roles (not deletion)](ADR-011-archive-for-ended-closed-roles-not-deletion.md) | Accepted |
+| ADR-012 | [Optional in-app AI via a Claude Code Web jobs API](ADR-012-optional-in-app-ai-via-a-claude-code-web-jobs-api.md) | Accepted |

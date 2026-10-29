@@ -70,6 +70,27 @@ from a local `.env` file (copy `.env.example` to `.env`). Nothing is hardcoded.
 | `JOBTRACKER_DB` | Tracker database location | `./jobs.db` |
 | `JOBTRACKER_XLSX` | Spreadsheet for `migrate.py` to import | _(none)_ |
 | `JOBTRACKER_IMPORT_DB` | External SQLite DB for `import_jobs.py` to pull from | _(none)_ |
+| `JOBTRACKER_UPLOAD_DIR` | Where uploaded CVs are kept | `./uploads` |
+| `CLAUDE_WEB_URL` | Claude Code Web server for the in-app AI tools (optional) | _(none)_ |
+| `CLAUDE_WEB_API_KEY` | That server's jobs-API key (`cwk_…`) | _(none)_ |
+
+## Claude assistant (optional)
+
+The **🤖 Claude assistant** section lets you upload your current CV (.docx,
+text-based PDF, .txt or .md) and keep your `profile.json`. If you run a
+[Claude Code Web](https://github.com/heng1234/claude-web) server with the jobs
+API, set `CLAUDE_WEB_URL` and `CLAUDE_WEB_API_KEY` and the same section can:
+
+- turn your uploaded CV into `profile.json` (you review it before saving);
+- search job boards for new roles, scored against your criteria and skipping
+  ones already tracked (you pick which to add);
+- review your fit for a role, tailor a CV, draft a cover letter, prepare you for
+  an interview, or draft a follow-up email;
+- draft every role queued as **Draft CV** in one click.
+
+CVs and letters are saved as `… (Claude).docx` next to the template drafts.
+Everything is a draft: nothing is sent or applied for. See
+[ADR-012](docs/architecture/decisions/ADR-012-optional-in-app-ai-via-a-claude-code-web-jobs-api.md).
 
 ## Importing data
 

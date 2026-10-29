@@ -57,3 +57,15 @@ def test_resolve_profile_default_uses_base_competencies():
     text, comps = cv_builder.resolve_profile(PROFILE, "default")
     assert text == "D"
     assert comps[0] == "General one"
+
+
+def test_empty_sections_are_left_out(tmp_path):
+    from docx import Document as _Doc
+
+    path = cv_builder.write_cv(
+        tmp_path / "cv.docx", name="Ada", title_line="BA", contact="", summary="S.",
+        competencies=["X"], jobs=[], achievements=[], certifications="", education="BSc",
+    )
+    texts = [p.text for p in _Doc(str(path)).paragraphs]
+    assert "KEY ACHIEVEMENTS" not in texts  # headings are upper-cased
+    assert "CERTIFICATIONS & EDUCATION" in texts and "BSc" in texts

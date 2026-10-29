@@ -49,3 +49,12 @@ RESUME_DIR = _path_env("JOBTRACKER_RESUME_DIR", PROJECT_ROOT / "resumes")
 # Profile data the in-app CV builder reads (kept out of the repo — copy
 # profile.example.json to profile.json and fill it in).
 PROFILE_PATH = _path_env("JOBTRACKER_PROFILE", PROJECT_ROOT / "profile.json")
+
+# Where uploaded CVs (the original file plus its extracted text) are kept.
+UPLOAD_DIR = _path_env("JOBTRACKER_UPLOAD_DIR", PROJECT_ROOT / "uploads")
+
+# Optional: a self-hosted Claude Code Web server whose jobs API drafts CVs, cover
+# letters, fit reviews, interview prep and follow-ups, and searches for roles
+# (ADR-012). Leave the key unset and the tracker stays fully local, as before.
+CLAUDE_WEB_URL = os.environ.get("CLAUDE_WEB_URL", "").strip().rstrip("/")
+CLAUDE_WEB_API_KEY = os.environ.get("CLAUDE_WEB_API_KEY", "").strip()

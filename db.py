@@ -78,6 +78,26 @@ CREATE TABLE IF NOT EXISTS jobs (
 -- Helps importers avoid re-inserting roles already logged.
 CREATE INDEX IF NOT EXISTS idx_jobs_source_job_id ON jobs(source_job_id);
 CREATE INDEX IF NOT EXISTS idx_jobs_status ON jobs(status);
+
+-- Work sent to a Claude Code Web server (claude_jobs.py, ADR-012). Optional: stays
+-- empty unless CLAUDE_WEB_API_KEY is set.
+CREATE TABLE IF NOT EXISTS ai_jobs (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    remote_id    TEXT UNIQUE,                  -- job id on the claude-web server
+    role_id      INTEGER,                      -- jobs.id it is about (NULL: search / CV)
+    profile      TEXT NOT NULL,                -- cv_tailor, cover_letter, job_search, ...
+    status       TEXT NOT NULL,                -- queued / running / succeeded / failed / cancelled
+    progress     TEXT,                         -- what the agent is doing now
+    input        TEXT,                         -- JSON sent (kept so a run can be repeated)
+    result       TEXT,                         -- JSON returned
+    error        TEXT,
+    cost_usd     REAL,
+    applied_at   TEXT,                         -- when its result was written back (files / columns)
+    applied_note TEXT,
+    created_at   TEXT NOT NULL DEFAULT (datetime('now')),
+    updated_at   TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_ai_jobs_status ON ai_jobs(status);
 """
 
 

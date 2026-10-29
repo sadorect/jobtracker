@@ -22,7 +22,7 @@ Top-down. Each page zooms in one level; stop when you have what you need.
 | 4 | [Workflows](#workflows) | How a role moves through the system, step by step |
 | 5 | [Data schema](generated/schema.md) · [Status lifecycle](generated/states.md) | What is stored and how it changes |
 | 6 | [Modules & symbols](generated/modules.md) · [Entry points](generated/entrypoints.md) | The reference layer |
-| 7 | [Decisions](decisions/README.md) | Why it is built this way (ADR-001 … ADR-011) |
+| 7 | [Decisions](decisions/README.md) | Why it is built this way (ADR-001 … ADR-012) |
 
 ## Workflows
 
