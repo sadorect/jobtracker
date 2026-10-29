@@ -18,7 +18,7 @@ dependencies and config.
   CVs/cover letters): Claude with the
   [job-hunt skill](examples/generate-job-hunt-skill.md) and the "Claude in Chrome"
   extension. The app and the agent are deliberately decoupled — see
-  [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for why.
+  [ADR-002](docs/architecture/decisions/ADR-002-the-app-is-decoupled-from-the-agent-connector-layer.md) for why.
 - **Bring your own profile:** copy `profile.example.json` to `profile.json`
   (git-ignored) — that's the only place your personal details live.
 
@@ -123,7 +123,7 @@ To-action queue generates the document(s) on save, then settles it to
 | `profile.example.json` | Template for your CV profile (copy to git-ignored `profile.json`) |
 | `seed.py` / `sample_jobs.csv` | Demo data |
 | `examples/` | Copy-paste prompt to generate a job-hunt skill that feeds the tracker |
-| `docs/` | Install guide, rollout backlog, and [architecture & decision records](docs/ARCHITECTURE.md) |
+| `docs/` | Install guide, rollout backlog, and [architecture walkthrough & decision records](docs/architecture/README.md) |
 | `tests/` | Pytest suite |
 
 ## Development

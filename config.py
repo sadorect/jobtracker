@@ -42,6 +42,10 @@ COVER_LETTER_DIR = _path_env("JOBTRACKER_COVER_LETTER_DIR", PROJECT_ROOT / "cove
 # Where generated CV drafts are saved. Defaults to ./cvs.
 CV_DIR = _path_env("JOBTRACKER_CV_DIR", PROJECT_ROOT / "cvs")
 
+# Where the job-hunt agent drops tailored CVs. Defaults to ./resumes. The
+# in-app CV preview searches this folder first, then CV_DIR.
+RESUME_DIR = _path_env("JOBTRACKER_RESUME_DIR", PROJECT_ROOT / "resumes")
+
 # Profile data the in-app CV builder reads (kept out of the repo — copy
 # profile.example.json to profile.json and fill it in).
 PROFILE_PATH = _path_env("JOBTRACKER_PROFILE", PROJECT_ROOT / "profile.json")

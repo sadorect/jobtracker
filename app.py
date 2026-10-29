@@ -13,6 +13,7 @@ import pandas as pd
 import streamlit as st
 
 import config
+import cv_preview
 import db
 import followup_queue
 
@@ -568,6 +569,53 @@ with col_gmail:
             "opens a search — it does not read your inbox or change the tracker."
         ),
     )
+
+# --- CV preview ------------------------------------------------------------ #
+# Content preview of a drafted .docx (headings/bullets/bold), not page layout —
+# see cv_preview.py. The download button gives the real file.
+st.divider()
+st.subheader("📄 CV preview")
+_with_cv = _all_df[_all_df["cv_version"].fillna("").astype(str).str.strip() != ""]
+if _with_cv.empty:
+    st.caption("No roles have a CV version recorded yet.")
+else:
+    _cv_map: dict[str, tuple[str, int]] = {}
+    for _, r in _with_cv.sort_values("date_found", ascending=False, na_position="last").iterrows():
+        _label = f"{int(r['id'])} · {r['title'] or '(untitled)'} — {r['company'] or '—'}"
+        _cv_map[_label] = (str(r["cv_version"]).strip(), int(r["id"]))
+    _cv_pick_col, _cv_dl_col = st.columns([3, 1])
+    _cv_choice = _cv_pick_col.selectbox(
+        "Role", list(_cv_map), key="cv_preview_role", label_visibility="collapsed",
+    )
+    _cv_name, _ = _cv_map[_cv_choice]
+    _cv_path = cv_preview.find_cv(_cv_name)
+    if _cv_path is None:
+        _cv_dl_col.button("⬇️ Download .docx", disabled=True, width="stretch")
+        st.warning(
+            f"`{_cv_name}` not found in "
+            + " or ".join(f"`{d}`" for d in cv_preview.SEARCH_DIRS)
+            + ". Check the CV version column matches the file on disk."
+        )
+    else:
+        _cv_dl_col.download_button(
+            "⬇️ Download .docx",
+            data=_cv_path.read_bytes(),
+            file_name=_cv_path.name,
+            mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            width="stretch",
+            key=f"cv_dl_{_cv_path.name}",
+        )
+        try:
+            _cv_md = cv_preview.docx_to_markdown(_cv_path)
+        except Exception as exc:  # corrupt / non-docx file
+            st.error(f"Couldn't read `{_cv_path.name}`: {exc}")
+        else:
+            with st.container(border=True, height=520):
+                st.markdown(_cv_md)
+            st.caption(
+                f"`{_cv_path}` · content preview only — fonts, margins and page "
+                "breaks aren't shown; open the .docx to check it fits on two pages."
+            )
 
 # --- Archive --------------------------------------------------------------- #
 st.divider()
